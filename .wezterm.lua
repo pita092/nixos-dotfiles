@@ -15,7 +15,3 @@ config.color_schemes = {
 config.color_scheme = 'My Modified Gruvbox'
 
 return config
-
-
-
-
