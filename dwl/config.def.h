@@ -3,51 +3,62 @@
                         ((hex >> 16) & 0xFF) / 255.0f, \
                         ((hex >> 8) & 0xFF) / 255.0f, \
                         (hex & 0xFF) / 255.0f }
+
+
 /* appearance */
+//window stuff
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
 static const int smartgaps                 = 0;  /* 1 means no outer gap when there is only one window */
 static int gaps                            = 1;  /* 1 means gaps between windows are added */
 static const unsigned int gappx            = 8; /* gap pixel between windows */
 static const unsigned int borderpx         = 1;  /* border pixel of windows */
+
+
+//bar stuff
 static const int user_bh		   = 30; /* 0 means that dwl will calculate barheight, >= 1 means dwl will use user_bh as the bar height. */
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
-static const int vertpad                   = 8; /* vertical padding of bar */
-static const int sidepad                   = 8; /* horizontal padding of bar */
+static const int vertpad                   = 8;
+static const int sidepad                   = 8;
+
+
+//other appearance stuff
+static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f};
 static const char *fonts[]                 = {"monospace:size=10"};
 static const float rootcolor[]             = COLOR(0x000000ff);
-/* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
-static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You can also use glsl colors */
+static const uint32_t boxcolor = 0x83a598ff; // replace with your desired color
 static uint32_t colors[][3]                = {
-	/*               fg          bg          border    */
+	//               fg          bg          border
 	[SchemeNorm] = { 0xebdbb2ff, 0x1d2021ff, 0x1d2021ff },
 	[SchemeSel]  = { 0xebdbb2ff, 0x1d2021ff, 0x1d2021ff },
 	[SchemeUrg]  = { 0,          0,          0 },
 };
 
-/* tagging - TAGCOUNT must be no greater than 31 */
+
+//tags
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-/* logging */
+
+//logging
 static int log_level = WLR_ERROR;
 
-/* Autostart */
+
+//autostart
 static const char *const autostart[] = {
         "swww-daemon", NULL,
         NULL /* terminate */
 };
 
 
-/* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
+//rules
 static const Rule rules[] = {
-	/* app_id             title       tags mask     isfloating   monitor */
-	/* examples: */
-	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
+	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 },
+	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 },
 };
 
-/* layout(s) */
+
+//layouts
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },
@@ -55,12 +66,7 @@ static const Layout layouts[] = {
 	{ "[M]",      monocle },
 };
 
-/* monitors */
-/* (x=-1, y=-1) is reserved as an "autoconfigure" monitor position indicator
- * WARNING: negative values other than (-1, -1) cause problems with Xwayland clients
- * https://gitlab.freedesktop.org/xorg/xserver/-/issues/899
-*/
-/* NOTE: ALWAYS add a fallback rule, even if you are completely sure it won't be used */
+//monitors
 static const MonitorRule monrules[] = {
 	/* name       mfact  nmaster scale layout       rotate/reflect                x    y */
 	/* example of a HiDPI laptop monitor:
@@ -70,7 +76,7 @@ static const MonitorRule monrules[] = {
 	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 };
 
-/* keyboard */
+//keyboard
 static const struct xkb_rule_names xkb_rules = {
 	/* can specify fields: rules, model, layout, variant, options */
 	/* example:
@@ -82,7 +88,8 @@ static const struct xkb_rule_names xkb_rules = {
 static const int repeat_rate = 25;
 static const int repeat_delay = 600;
 
-/* Trackpad */
+
+//trackpad
 static const int tap_to_click = 1;
 static const int tap_and_drag = 1;
 static const int drag_lock = 1;
@@ -90,42 +97,14 @@ static const int natural_scrolling = 0;
 static const int disable_while_typing = 1;
 static const int left_handed = 0;
 static const int middle_button_emulation = 0;
-/* You can choose between:
-LIBINPUT_CONFIG_SCROLL_NO_SCROLL
-LIBINPUT_CONFIG_SCROLL_2FG
-LIBINPUT_CONFIG_SCROLL_EDGE
-LIBINPUT_CONFIG_SCROLL_ON_BUTTON_DOWN
-*/
 static const enum libinput_config_scroll_method scroll_method = LIBINPUT_CONFIG_SCROLL_2FG;
-
-/* You can choose between:
-LIBINPUT_CONFIG_CLICK_METHOD_NONE
-LIBINPUT_CONFIG_CLICK_METHOD_BUTTON_AREAS
-LIBINPUT_CONFIG_CLICK_METHOD_CLICKFINGER
-*/
 static const enum libinput_config_click_method click_method = LIBINPUT_CONFIG_CLICK_METHOD_BUTTON_AREAS;
-
-/* You can choose between:
-LIBINPUT_CONFIG_SEND_EVENTS_ENABLED
-LIBINPUT_CONFIG_SEND_EVENTS_DISABLED
-LIBINPUT_CONFIG_SEND_EVENTS_DISABLED_ON_EXTERNAL_MOUSE
-*/
 static const uint32_t send_events_mode = LIBINPUT_CONFIG_SEND_EVENTS_ENABLED;
-
-/* You can choose between:
-LIBINPUT_CONFIG_ACCEL_PROFILE_FLAT
-LIBINPUT_CONFIG_ACCEL_PROFILE_ADAPTIVE
-*/
 static const enum libinput_config_accel_profile accel_profile = LIBINPUT_CONFIG_ACCEL_PROFILE_ADAPTIVE;
 static const double accel_speed = 0.0;
-
-/* You can choose between:
-LIBINPUT_CONFIG_TAP_MAP_LRM -- 1/2/3 finger tap maps to left/right/middle
-LIBINPUT_CONFIG_TAP_MAP_LMR -- 1/2/3 finger tap maps to left/middle/right
-*/
 static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TAP_MAP_LRM;
 
-/* If you want to use the windows key for MODKEY, use WLR_MODIFIER_LOGO */
+//ketybinds
 #define MODKEY WLR_MODIFIER_ALT
 
 #define TAGKEYS(KEY,SKEY,TAG) \
@@ -137,7 +116,7 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-/* commands */
+//commands
 static const char *termcmd[] = { "foot", NULL };
 static const char *menucmd[] = { "wmenu-run", NULL };
 

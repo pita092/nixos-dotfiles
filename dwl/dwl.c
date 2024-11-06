@@ -1579,9 +1579,14 @@ drawbar(Monitor *m)
 		w = TEXTW(m, tags[i]);
 		drwl_setscheme(m->drw, colors[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drwl_text(m->drw, x, 0, w, m->b.height, m->lrpad / 2, tags[i], urg & 1 << i);
-      drwl_rect(m->drw, x + boxs, boxs, boxw, boxw,
-        m == selmon && m->tagset[m->seltags] & 1 << i,
-        urg & 1 << i);
+    drwl_setscheme(m->drw, &accent);
+    drwl_rect(m->drw, x + boxs, boxs, boxw, boxw,
+              m == selmon && m->tagset[m->seltags] & 1 << i,
+              urg & 1 << i);
+    drwl_setscheme(m->drw, colors[SchemeNorm]);
+      /*drwl_rect(m->drw, x + boxs, boxs, boxw, boxw,*/
+      /*  m == selmon && m->tagset[m->seltags] & 1 << i,*/
+      /*  urg & 1 << i);*/
 		x += w;
 	}
 	w = TEXTW(m, m->ltsymbol);
@@ -1647,8 +1652,9 @@ drawstatus(Monitor *m)
 
 	x = m->b.width - tw;
 	itext = stext;
-	scheme[0] = colors[SchemeNorm][0];
-	scheme[1] = colors[SchemeNorm][1];
+  scheme[0] = accent;  // Set foreground to boxcolor
+  scheme[1] = colors[SchemeNorm][1];  // Keep normal background color
+  scheme[2] = colors[SchemeNorm][2];
 	drwl_setscheme(m->drw, scheme);
 	for (p = stext; *p; p++) {
 		if (*p == '^') {
