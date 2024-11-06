@@ -1579,22 +1579,19 @@ drawbar(Monitor *m)
 		w = TEXTW(m, tags[i]);
 		drwl_setscheme(m->drw, colors[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drwl_text(m->drw, x, 0, w, m->b.height, m->lrpad / 2, tags[i], urg & 1 << i);
-		drwl_setscheme(m->drw, &accent);
-		drwl_rect(m->drw,
-			  x + w - boxw - boxs,  // X position: right side of tag area
-			  m->b.height - boxw - boxs,  // Y position: bottom of bar
-			  boxw,
-			  boxw,
-			  m == selmon && m->tagset[m->seltags] & 1 << i,
-			  urg & 1 << i);
-		drwl_setscheme(m->drw, colors[SchemeNorm]);
+    drwl_setscheme(m->drw, &accent);
+    drwl_rect(m->drw, x + boxs, boxs, boxw, boxw,
+              m == selmon && m->tagset[m->seltags] & 1 << i,
+              urg & 1 << i);
+    drwl_setscheme(m->drw, colors[SchemeNorm]);
+      /*drwl_rect(m->drw, x + boxs, boxs, boxw, boxw,*/
+      /*  m == selmon && m->tagset[m->seltags] & 1 << i,*/
+      /*  urg & 1 << i);*/
 		x += w;
 	}
 	w = TEXTW(m, m->ltsymbol);
-	uint32_t layoutScheme[3] = {accent, colors[SchemeNorm][1], colors[SchemeNorm][2]};
-	drwl_setscheme(m->drw, layoutScheme);
+	drwl_setscheme(m->drw, colors[SchemeNorm]);
 	x = drwl_text(m->drw, x, 0, w, m->b.height, m->lrpad / 2, m->ltsymbol, 0);
-	drwl_setscheme(m->drw, colors[SchemeNorm]); // Reset to normal scheme
 
 	if ((w = m->b.width - tw - x) > m->b.height) {
 		if (c) {
@@ -1610,78 +1607,11 @@ drawbar(Monitor *m)
 
 	wlr_scene_buffer_set_dest_size(m->scene_buffer,
 		m->b.real_width, m->b.real_height);
-	wlr_scene_node_set_position(&m->scene_buffer->node, m->m.x + sidepad, // - / + 2
+	wlr_scene_node_set_position(&m->scene_buffer->node, m->m.x + sidepad,
 		m->m.y + (topbar ? vertpad : m->m.height - m->b.real_height - vertpad));
 	wlr_scene_buffer_set_buffer(m->scene_buffer, &buf->base);
 	wlr_buffer_unlock(&buf->base);
 }
-/*void*/
-/*drawbar(Monitor *m)*/
-/*{*/
-/*	int x, w, tw = 0;*/
-/*	int boxs = m->drw->font->height / 9;*/
-/*	int boxw = m->drw->font->height / 6 + 2;*/
-/*	uint32_t i, occ = 0, urg = 0;*/
-/*	Client *c;*/
-/*	Buffer *buf;*/
-/**/
-/*	if (!m->scene_buffer->node.enabled)*/
-/*		return;*/
-/*	if (!(buf = bufmon(m)))*/
-/*		return;*/
-/**/
-/*	/* draw status first so it can be overdrawn by tags later */
-/*	if (m == selmon) /* status is only drawn on selected monitor */
-/*		tw = drawstatus(m);*/
-/**/
-/*	wl_list_for_each(c, &clients, link) {*/
-/*		if (c->mon != m)*/
-/*			continue;*/
-/*		occ |= c->tags;*/
-/*		if (c->isurgent)*/
-/*			urg |= c->tags;*/
-/*	}*/
-/*	x = 0;*/
-/*	c = focustop(m);*/
-/*	for (i = 0; i < LENGTH(tags); i++) {*/
-/*		w = TEXTW(m, tags[i]);*/
-/*		drwl_setscheme(m->drw, colors[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);*/
-/*		drwl_text(m->drw, x, 0, w, m->b.height, m->lrpad / 2, tags[i], urg & 1 << i);*/
-/*    drwl_setscheme(m->drw, &accent);*/
-/*    drwl_rect(m->drw, x + boxs, boxs, boxw, boxw,*/
-/*              m == selmon && m->tagset[m->seltags] & 1 << i,*/
-/*              urg & 1 << i);*/
-/*    drwl_setscheme(m->drw, colors[SchemeNorm]);*/
-/*      /*drwl_rect(m->drw, x + boxs, boxs, boxw, boxw,*/
-/*      /*  m == selmon && m->tagset[m->seltags] & 1 << i,*/
-/*      /*  urg & 1 << i);*/
-/*		x += w;*/
-/*	}*/
-/*w = TEXTW(m, m->ltsymbol);*/
-/*  uint32_t layoutScheme[3] = {accent, colors[SchemeNorm][1], colors[SchemeNorm][2]};*/
-/*  drwl_setscheme(m->drw, layoutScheme);*/
-/*  x = drwl_text(m->drw, x, 0, w, m->b.height, m->lrpad / 2, m->ltsymbol, 0);*/
-/*  drwl_setscheme(m->drw, colors[SchemeNorm]); // Reset to normal scheme*/
-/**/
-/*	if ((w = m->b.width - tw - x) > m->b.height) {*/
-/*		if (c) {*/
-/*			drwl_setscheme(m->drw, colors[m == selmon ? SchemeSel : SchemeNorm]);*/
-/*			drwl_text(m->drw, x, 0, w, m->b.height, m->lrpad / 2, client_get_title(c), 0);*/
-/*			if (c && c->isfloating)*/
-/*				drwl_rect(m->drw, x + boxs, boxs, boxw, boxw, 0, 0);*/
-/*		} else {*/
-/*			drwl_setscheme(m->drw, colors[SchemeNorm]);*/
-/*			drwl_rect(m->drw, x, 0, w, m->b.height, 1, 1);*/
-/*		}*/
-/*	}*/
-/**/
-/*	wlr_scene_buffer_set_dest_size(m->scene_buffer,*/
-/*		m->b.real_width, m->b.real_height);*/
-/*  wlr_scene_node_set_position(&m->scene_buffer->node, m->m.x + sidepad, // - / + 2*/
-/*    m->m.y + (topbar ? vertpad : m->m.height - m->b.real_height - vertpad));*/
-/*	wlr_scene_buffer_set_buffer(m->scene_buffer, &buf->base);*/
-/*	wlr_buffer_unlock(&buf->base);*/
-/*}*/
 
 void
 drawbars(void)
@@ -1718,7 +1648,7 @@ drawstatus(Monitor *m)
 			strncat(rstext, p, 1);
 		}
 	}
-	tw = TEXTW(m, rstext) - m->lrpad; /* 2px right padding */
+	tw = TEXTW(m, rstext) - m->lrpad + 2; /* 2px right padding */
 
 	x = m->b.width - tw;
 	itext = stext;
