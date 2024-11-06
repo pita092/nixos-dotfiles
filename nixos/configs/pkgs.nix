@@ -1,0 +1,57 @@
+{ pkgs, ... }:
+{
+
+  home.packages = [
+
+    pkgs.chromium
+    pkgs.kitty
+    pkgs.zig
+    pkgs.bemenu
+    pkgs.nodePackages_latest.js-yaml
+    pkgs.inotify-tools
+    pkgs.wlroots
+    pkgs.wayland-protocols
+    pkgs.python3
+    pkgs.webcord-vencord
+    pkgs.ripgrep
+    pkgs.emacs
+    pkgs.stylua
+    pkgs.sway-contrib.grimshot
+    pkgs.swayfx
+    pkgs.nixfmt-rfc-style
+    pkgs.neovim
+    pkgs.rofi-wayland
+    pkgs.grim
+    pkgs.slurp
+    pkgs.eww
+    pkgs.waybar
+    pkgs.autotiling
+    pkgs.killall
+    pkgs.gtk4
+    pkgs.gtk4-layer-shell
+    pkgs.xdg-desktop-portal-wlr
+    pkgs.wmenu
+    pkgs.xterm
+    pkgs.waybar
+    pkgs.swww
+    pkgs.rustup
+    pkgs.gcc
+    pkgs.ghc
+    pkgs.haskellPackages.haskell-language-server
+    pkgs.gh
+    pkgs.clipmenu
+    pkgs.pkgs.nasm
+    pkgs.autotiling
+    pkgs.gnumake
+    pkgs.autoconf
+    pkgs.automake
+    pkgs.bison
+    pkgs.gettext
+    pkgs.gperf
+    pkgs.libnotify
+    pkgs.fastfetch
+    pkgs.wl-clipboard
+    pkgs.fzf
+    pkgs.zoxide
+  ];
+}
