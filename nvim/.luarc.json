@@ -1,0 +1,13 @@
+{
+  "runtime": {
+    "version": "LuaJIT"
+  },
+  "diagnostics": {
+    "globals": ["vim",
+            "bold"]
+  },
+  "workspace": {
+    "library": ["$VIMRUNTIME/lua", "$VIMRUNTIME/lua/vim/lsp"]
+  }
+}
+
